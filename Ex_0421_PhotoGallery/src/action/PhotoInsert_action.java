@@ -34,7 +34,7 @@ public class PhotoInsert_action extends HttpServlet {
 		
 		ServletContext application = request.getServletContext();
 		String path = application.getRealPath(web_path);
-		System.out.println(path);
+		
 		
 		int max_size = 1024*1024*100;
 		
@@ -57,8 +57,8 @@ public class PhotoInsert_action extends HttpServlet {
 		
 		
 		// 파일 형식 이외의 일반 파라미터 수신하기
-		String title = request.getParameter("title");
-		String pwd = request.getParameter("pwd");
+		String title = mr.getParameter("title");
+		String pwd = mr.getParameter("pwd");
 		String ip = request.getRemoteAddr(); // ip 얻어오기
 		
 		
