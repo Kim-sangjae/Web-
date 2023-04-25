@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="js/httpRequest.js"></script>
 <script type="text/javascript">
 
 //아이디 중복체크 여부
@@ -71,10 +72,31 @@ function check_id(){
 }
 
 
-function resultFn(){
+function resultFn(){ // check_id 안에 sendRequest 콜백함수
+	
 	if(xhr.readyState == 4 && xhr.status == 200){
 		
+		var data = xhr.responseText;
+		
+		var json = eval(data);
+		
+		if(json[0].res == 'no'){
+			alert("이미 사용중인 아이디 입니다.");
+			
+			return;
+		}else{
+			alert("사용가능한 아이디 입니다.");
+			b_idCheck = true;
+			
+			return;
+		}
+		
 	}
+	
+}
+
+function che(){
+	b_idCheck = false;
 }
 
 
@@ -100,7 +122,8 @@ function resultFn(){
 	<tr>
 		<td>아이디</td>
 		<td>
-			<input type="text" name="id" id="id">
+		<!-- onchange : input 태그의 포커스가 벗어났을 때 (즉 , 입력이 끝났을 때) 이벤트 발생 -->
+			<input type="text" name="id" id="id" onchange="che()">
 			<input type="button" value="중복체크" onclick="check_id()">
 		</td>
 	</tr>

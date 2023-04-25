@@ -11,41 +11,34 @@ import dao.UserDAO;
 import vo.UserVO;
 
 /**
- * Servlet implementation class UserInsertAction
+ * Servlet implementation class UserIdCheckAction
  */
-@WebServlet("/insert.do")
-public class UserInsertAction extends HttpServlet {
+@WebServlet("/check_id.do")
+public class UserIdCheckAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
 
 	/**
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+			
+		// check_id.do?id=asdasd
 		
-		request.setCharacterEncoding("utf-8");
-		
-		String name = request.getParameter("name");
 		String id = request.getParameter("id");
-		String pwd = request.getParameter("pwd");
 		
+		UserVO vo = UserDAO.getInstance().selectOne(id);
 		
+		String res = "no";
 		
-		
-		
-		UserVO vo = new UserVO();
-		
-		vo.setName(name);
-		vo.setId(id);
-		vo.setPwd(pwd);
-		
-		
-		int res = UserDAO.getInstance().insert(vo);
-		
-		if(res >= 1) {
-			response.sendRedirect("UserLIst.do");
+		if(vo == null) { // 넘어온 vo가 null이면  가입이 가능하다
+			res = "yes";
 		}
 		
+		String result = String.format("[{'res':'%s'}]", res);
+		response.getWriter().print(result); // 콜백메서드로 복귀
+	
+	
 	}
 
 }

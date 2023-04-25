@@ -47,6 +47,45 @@ transform:rotate(360deg);
 		
 </style>
 		
+<script src="js/httpRequest.js"></script>		
+<script type="text/javascript">
+
+function del(idx){
+	
+	if(confirm("정말 삭제하시겠습니까?") == false){
+		return;
+	}else{
+		
+		var url = "user_del.do";
+		var param = "idx=" + idx;
+		
+		sendRequest(url,param,resultFn,"post");
+	}	
+	
+}
+
+
+function resultFn(){
+	if(xhr.readyState == 4 && xhr.status == 200){
+		
+		
+		var data = xhr.responseText;
+		
+		var json = eval(data);
+		
+		if(json[0].param == 'yes'){
+			alert("삭제성공");
+		}else{
+			alert("삭제실패");
+		}
+		
+		location.href="UserLIst.do";
+		
+	}
+}
+
+
+</script>		
 		
 		
 	</head>
@@ -74,7 +113,7 @@ transform:rotate(360deg);
 		 	<td>${vo.id}</td>
 		 	<td>${vo.pwd}</td>
 		 	<td>
-		 		<input type="button" value="삭제" onclick="del()">
+		 		<input type="button" value="삭제" onclick="del('${vo.idx}')">
 		 	</td>
 		 </tr>
 	 	</c:forEach>
