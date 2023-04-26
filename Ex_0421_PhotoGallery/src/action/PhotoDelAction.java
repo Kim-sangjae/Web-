@@ -38,6 +38,7 @@ public class PhotoDelAction extends HttpServlet {
 		// 절대경로
 		String web_path= "/upload/";
 		ServletContext app = request.getServletContext();
+		
 		String path = app.getRealPath(web_path);
 		
 		
@@ -50,9 +51,10 @@ public class PhotoDelAction extends HttpServlet {
 		}
 		
 		
-		String param = "no";
+		String param ="no";
+		
 		if(res>0) {
-			param = "yes";
+			param ="yes";
 		}
 		
 		

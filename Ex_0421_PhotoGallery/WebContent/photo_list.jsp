@@ -12,7 +12,16 @@
 
 	function del(f){
 		var idx = f.idx.value;
-		alert(idx);
+		var pwd = f.pwd.value;
+		var pwd2 = f.pwd2.value;
+		
+		if(pwd != pwd2){
+			alert("비밀번호가 일치하지 않습니다");
+			return;
+			
+		}
+		
+		
 		
 		if(!confirm("삭제하시겠습니까?")){
 			return;
@@ -20,14 +29,16 @@
 		
 		//삭제를 원하는 idx를 서버로 전송
 		var url = "photo_del.do";
-		var param = "idx =" + idx + "&filename=" + f.filename.value;
+		var param = "idx=" + idx + "&filename=" + f.filename.value;
 		
 		
 		sendRequest(url,param,finRes,"POST");
 	}
 	
+	
+	
 	function finRes(){
-		if(xhr.ready == 4 && xhr.status == 200){
+		if(xhr.readyState == 4 && xhr.status == 200){
 			
 			//서블릿으로부터 도착한 데이터 읽어오기
 			var data = xhr.responseText;
@@ -36,15 +47,27 @@
 			// JSON 형식으로 변경해줘야 한다
 			var json = eval(data);
 			
-			if(json[0].param == 'yes'){
+			if(json[0].param =='yes'){
+				
 				alert("삭제성공");
+				
 			}else{
+				
 				alert("삭제실패");
-			}
 			
+			}
+		
 			location.href="list.do";
 			
 		}
+		
+	}
+	
+	
+	
+	function download(fn){
+		
+		location.href="download.do?dir=/upload/&filename="+fn;
 	}
 	
 	
@@ -79,9 +102,12 @@
 					<form>
 					
 						<input type="hidden" name="idx" value="${vo.idx}">
+						<input type="hidden" name="pwd" value="${vo.pwd}">
 						<input type="hidden" name="filename" value="${vo.filename}">
 						
 					<div>
+						<input type="password" name="pwd2" size="5">
+						<input type="button" value="down" onclick="download('${vo.filename}')">
 						<input type="button" value="삭제" onclick="del(this.form)">
 					</div>
 					
