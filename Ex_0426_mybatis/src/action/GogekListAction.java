@@ -25,7 +25,29 @@ public class GogekListAction extends HttpServlet {
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-	List<GogekVO> list = GogekDAO.getInstance().select();
+	String search = "all";
+	
+	String str_search = request.getParameter("search");
+	
+	
+	//정상적으로 값이 들어온 경우
+	if(str_search != null && !str_search.isBlank()) {
+		search = str_search;
+	}
+	
+	
+	
+	List<GogekVO> list;
+	
+	
+	
+	if(search.equalsIgnoreCase("all")) {
+		list = GogekDAO.getInstance().select();
+	} else {
+		list = GogekDAO.getInstance().select(search);
+	}
+		
+	
 	
 	
 	request.setAttribute("list", list);

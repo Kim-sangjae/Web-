@@ -8,8 +8,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <select id="sawon_list" resultType="vo.SawonVO">
 	select * from Sawon
 </select>
- 
 
+
+<select id="sawon_list_no" resultType="vo.SawonVO" parameterType="int">
+	select * from Sawon where deptno = #{deptno}
+</select>
  
   
 

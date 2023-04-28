@@ -37,17 +37,33 @@ public class SawonDAO {
 	
 	
 	
-	// 사원 목록 조회
+	// 사원 목록전체 조회
 	public List<SawonVO> select(){
 		SqlSession sqlSession = factory.openSession();
 		
 		List<SawonVO> list = sqlSession.selectList("s.sawon_list");
-		
+	
 		// conn,pstmt,rs를 close하는 내용이 포함
 		sqlSession.close();
-		
 		return list;
 	}
+	
+	
+	
+	// 특정부서 사원만 조회 오버로드
+	public List<SawonVO> select(int deptno){
+		//1.처리객체 얻어오기
+		SqlSession sqlSession = factory.openSession();
+		
+		//2. 쿼리 작업 수행
+		List<SawonVO> deptlist = sqlSession.selectList("s.sawon_list_no",deptno);
+		
+		sqlSession.close();
+		
+		return deptlist;
+		
+	}
+	
 	
 	
 	

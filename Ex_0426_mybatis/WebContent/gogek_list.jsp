@@ -10,12 +10,33 @@
 <style>
 table{
 border-spacing:5px;
-}
+text-align:center;
+background-color:gray;
+color:white;
 
+}
+tr{
+background-color:black;
+box-shadow:5px 5px 5px 5px;
+}
 </style>
+
+<script type="text/javascript">
+	function search(){
+		var search = document.getElementById("search").value.trim();
+		location.href="gogek_list.do?search="+search;
+	}
+</script>
+
 </head>
 
 <body>
+
+<div align="center">
+	지역:
+	<input id="search" placeholder="검색어를 입력하세요">
+	<input type="button" value="검색" onclick="search()">
+</div>
 
 
 <table border="1" align="center">

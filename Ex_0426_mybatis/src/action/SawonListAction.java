@@ -24,8 +24,46 @@ public class SawonListAction extends HttpServlet {
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//sawon_list.do?deptno=10
+		
+		int deptno = 0;
+		
+		String str_deptno = request.getParameter("deptno");
+		
+		
+		//파라미터를 String으로 받은 이유
+		//최초로 시작하면 deptno는 null이 넘어오기 때문에 int로 형변환하면 에러가 난다
+		
+		
+		//sawon_list.do
+		//sawon_list.do?   -> null
+		//sawon_list.do?deptno=   ->empty
+		
+		if(str_deptno != null && !str_deptno.isBlank()) {
+//			넘어온값이 비어있지않으면 실제 정수로 변환할수있다
+			deptno = Integer.parseInt(str_deptno);
+		
+		}
+		
+		
+		
+		
+		List<SawonVO> list = null;
+		
+		if(deptno == 0) {
 			
-		List<SawonVO> list = SawonDAO.getInstance().select();
+			 list = SawonDAO.getInstance().select();
+			
+		} else {
+			
+			list = SawonDAO.getInstance().select(deptno); // 메서드오버로드하자
+		}
+		
+		
+		
+		
+		
+		
 		
 		
 		request.setAttribute("list", list);
