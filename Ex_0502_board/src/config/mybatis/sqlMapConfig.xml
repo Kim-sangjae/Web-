@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="vo.BoardVO" alias="board" />
+	</typeAliases>
+
+
+	<environments default="">
+		<environment id="">
+			<transactionManager type="JDBC" />
+			
+			<!-- 마이 바티스가 JNDI 를 찾아주는 코드 -->
+			<dataSource type="JNDI">
+				<property name="data_source" 
+				value="java:comp/env/jdbc/oracle_test" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="config/mybatis/mapper/board.xml" /> <!-- 쿼리문을 작성할 xml설정파일과 매퍼의 갯수는 동일해야 한다 -->
+	</mappers>
+</configuration>
