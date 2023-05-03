@@ -11,10 +11,10 @@ import dao.BoardDAO;
 import vo.BoardVO;
 
 /**
- * Servlet implementation class BoardInsertAction
+ * Servlet implementation class BoardReplyAction
  */
-@WebServlet("/insert.do")
-public class BoardInsertAction extends HttpServlet {
+@WebServlet("/reply.do")
+public class BoardReplyAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -24,32 +24,23 @@ public class BoardInsertAction extends HttpServlet {
 		
 		request.setCharacterEncoding("utf-8");
 		
+		int idx = Integer.parseInt(request.getParameter("idx"));
 		String name = request.getParameter("name");
-		String subjcet = request.getParameter("subject");
+		String subject = request.getParameter("subjcet");
 		String content = request.getParameter("content");
 		String pwd = request.getParameter("pwd");
 		String ip = request.getRemoteAddr();
 		
-		BoardVO vo = new BoardVO();
-		vo.setName(name);
-		vo.setSubject(subjcet);
-		vo.setContent(content);
-		vo.setPwd(pwd);
-		vo.setIp(ip);
-		System.out.println("이름 : " +vo.getName());
-		System.out.println("제목 : " +vo.getSubject());
-		System.out.println("내용 : " +vo.getContent());
-		System.out.println("pwd : " +vo.getPwd());
-		System.out.println("ip : " +vo.getIp());
 		
-	
-		int res = BoardDAO.getInstance().insert(vo);
+		//같은 ref를 가지고 있는 데이터들 중에서 지금 내가 추가하려고 하는 step보다 큰애들을 +1 해야한다 때문에 insert를 먼저 하지 않는다
 		
-		if(res > 0 ) {
-			
-			response.sendRedirect("board_list.do");
-		}
-	
+		BoardDAO dao = BoardDAO.getInstance();
+		
+		// 기준글의 idx를 이용하여 답글을 달고싶은 게시글의 정보를 가져온다.
+		BoardVO base_vo = dao.getInstance().selectOne(idx);
+		
+		// 기준글의 step보다 큰 값들에 대해 +1처리하기
+		int res = dao.update_step(base_vo);
 		
 	}
 

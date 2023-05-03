@@ -35,7 +35,7 @@
 					<c:if test="${vo.depth ne 0}">ㄴ</c:if>
 					<a href="view.do?idx=${vo.idx}">
 					<font color="black">
-					${vo.subject}
+						${vo.subject}
 					</font>
 					</a>
 				</td>

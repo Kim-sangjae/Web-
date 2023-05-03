@@ -44,6 +44,54 @@ public class BoardDAO {
 	}
 	
 	
+	public int insert(BoardVO vo) {
+		
+		SqlSession sqlSession = factory.openSession(true);
+		
+//		openSession(true) 를 해주면 오토커밋이 된다.
+		
+		int res = sqlSession.insert("b.board_insert",vo);
+		
+		
+		
+		sqlSession.close();
+		return res;
+		
+	}
+	
+	
+	// 게시글 상세 조회
+	public BoardVO selectOne(int idx) {
+		
+		SqlSession sqlSession = factory.openSession();
+		BoardVO vo = sqlSession.selectOne("b.board_one",idx);
+		
+		sqlSession.close();
+		return vo;
+	};
+	
+	
+	//조회수 증가
+	public int update_readhit(int idx) {
+		
+		SqlSession sqlSession = factory.openSession(true);
+		int res = sqlSession.update("b.board_readhit",idx);
+		sqlSession.close();
+		
+		return res;
+		
+	}
+	
+	
+	//답글 추가를 위한 step +1 작업
+	public int update_step(BoardVO vo) {
+		SqlSession sqlSession = factory.openSession(true);
+		
+		int res = sqlSession.update("b.board_update_step",vo);
+		sqlSession.close();
+		
+		return res;
+	}
 	
 	
 	
