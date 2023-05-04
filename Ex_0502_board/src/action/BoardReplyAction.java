@@ -26,7 +26,7 @@ public class BoardReplyAction extends HttpServlet {
 		
 		int idx = Integer.parseInt(request.getParameter("idx"));
 		String name = request.getParameter("name");
-		String subject = request.getParameter("subjcet");
+		String subject = request.getParameter("subject");
 		String content = request.getParameter("content");
 		String pwd = request.getParameter("pwd");
 		String ip = request.getRemoteAddr();
@@ -37,10 +37,35 @@ public class BoardReplyAction extends HttpServlet {
 		BoardDAO dao = BoardDAO.getInstance();
 		
 		// 기준글의 idx를 이용하여 답글을 달고싶은 게시글의 정보를 가져온다.
-		BoardVO base_vo = dao.getInstance().selectOne(idx);
+		BoardVO base_vo = dao.selectOne(idx);
 		
 		// 기준글의 step보다 큰 값들에 대해 +1처리하기
 		int res = dao.update_step(base_vo);
+		
+		// 댓글 객체
+		BoardVO vo = new BoardVO();
+		vo.setName(name);
+		vo.setSubject(subject);
+		vo.setContent(content);
+		vo.setPwd(pwd);
+		vo.setIp(ip);
+		
+		vo.setRef(base_vo.getRef());
+		vo.setStep(base_vo.getStep()+1);
+		vo.setDepth(base_vo.getDepth()+1);
+		
+		
+		// 답글 실제 등록
+		int res1 = dao.reply(vo);
+		
+		if(res1 > 0) {
+			
+			response.sendRedirect("board_list.do");
+		}
+		
+		
+		
+		
 		
 	}
 

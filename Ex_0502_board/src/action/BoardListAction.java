@@ -1,6 +1,7 @@
 package action;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.BoardDAO;
+import util.Common;
 import vo.BoardVO;
 
 /**
@@ -29,8 +31,26 @@ public class BoardListAction extends HttpServlet {
 		
 		request.setCharacterEncoding("utf-8");
 		
+		int nowPage = 1;
+		String page = request.getParameter("page");
+		
+		
+		if(page != null && !page.isEmpty()) {
+			nowPage = Integer.parseInt(page);
+		}
+		
+		int start = (nowPage -1)*Common.Board.BLOCKLIST+1;
+		int end = start+Common.Board.BLOCKLIST-1;
+		
+		HashMap<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		
+		
+		
+		
 		//전체 게시글 조회하기
-		List<BoardVO> list = BoardDAO.getInstance().select();
+		List<BoardVO> list = BoardDAO.getInstance().select(map);
 		
 		//조회수를 위해 저장해뒀던 "show"라는 정보를 세션에서 제거
 		HttpSession session = request.getSession();

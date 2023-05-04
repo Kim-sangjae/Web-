@@ -7,10 +7,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style type="text/css">
 	a{text-decoration:none;}
 	font:hover{color:red;}
 	table{border-collapse:collapse;}
+
+
 </style>
 </head>
 <body>
@@ -33,14 +36,35 @@
 					<!-- 답글일 경우 들여쓰기 -->
 					<c:forEach begin="1" end="${vo.depth}">&nbsp;</c:forEach>
 					<c:if test="${vo.depth ne 0}">ㄴ</c:if>
+					
+					<c:if test="${vo.del_info ne -1 }">
 					<a href="view.do?idx=${vo.idx}">
 					<font color="black">
 						${vo.subject}
 					</font>
 					</a>
+					</c:if>
+					
+					
+					<!-- 삭제된 게시물 클릭못하게 변경 -->
+					<c:if test="${vo.del_info eq -1 }">
+					<font color="gray">
+						${vo.subject}
+					</font>
+					</c:if>
+					
+					
 				</td>
 				<td>${vo.name}</td>
+				
+				<c:if test="${vo.del_info ne -1}">
 				<td>${fn:split(vo.regdate,' ')[0]}</td>
+				</c:if>
+				
+				<c:if test="${vo.del_info eq -1}">
+				<td>x</td>
+				</c:if>
+				
 				<td align="center">${vo.readhit}</td>
 			</tr>
 		</c:forEach>
@@ -57,7 +81,7 @@
 					style="cursor:pointer">
 		</tr>
 	</table>
-
+	
 
 
 </body>

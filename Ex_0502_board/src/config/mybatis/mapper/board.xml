@@ -4,8 +4,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="b">
 
-<select id="board_list" resultType="board"> <!-- sqlmapCOnfig 에  BoardVO 를 board라고 별칭지어놨다 -->
-	select * from board order by ref desc, step asc
+<select id="board_list" resultType="board" parameterType="java.util.HashMap"> <!-- sqlmapCOnfig 에  BoardVO 를 board라고 별칭지어놨다 -->
+	select * from (select rank() over(order by ref desc, step) no,
+	 b.* from board b)
+	 where no between #{start} and #{end}
 </select>
 
 <insert id="board_insert" parameterType="board">
@@ -19,6 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		sysdate,
 		0,
 		seq_board_idx.currval,
+		0,
 		0,
 		0
 	)
@@ -48,6 +51,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	update board set step = step + 1
 	where ref = #{ref} and step > #{step}
 </update>
+
+
+<insert id="board_reply" parameterType="board">
+	insert into board values( eq_board_idx.nextval,
+		#{name},
+		#{subject},
+		#{content},
+		#{pwd},
+		#{ip},
+		sysdate,
+		0,
+		#{ref},
+		#{step},
+		#{depth},
+		0
+			)
+</insert>
+
+
+
+<!-- 게시글 삭제된것처럼 보이기 -->
+<update id="del_update" parameterType="board">
+	update board set
+		subject = #{subject},
+		name = #{name},
+		del_info = -1
+		where idx = #{idx}
+
+</update>
+
+
 
   
 </mapper>

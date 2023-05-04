@@ -28,7 +28,7 @@
 			</tr>
 			<tr>
 				<th>작성자</th>
-				<td><input name="subject" style="width:97.8%;"></td>
+				<td><input name="name" style="width:97.8%;"></td>
 			</tr>
 			<tr>
 				<th>내용</th>

@@ -7,6 +7,7 @@ public class BoardVO {
 	private int ref; // 참조댓글번호
 	private int step; // 댓글 순서
 	private int depth; // 댓글 깊이
+	private int del_info;
 	
 	private String name; // 작성자
 	private String subject; // 제목
@@ -16,6 +17,13 @@ public class BoardVO {
 	private String regdate; //등록날짜
 	
 	
+	
+	public int getDel_info() {
+		return del_info;
+	}
+	public void setDel_info(int del_info) {
+		this.del_info = del_info;
+	}
 	public int getIdx() {
 		return idx;
 	}
