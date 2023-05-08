@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.BoardDAO;
 import util.Common;
+import util.Paging;
 import vo.BoardVO;
 
 /**
@@ -52,6 +53,18 @@ public class BoardListAction extends HttpServlet {
 		//전체 게시글 조회하기
 		List<BoardVO> list = BoardDAO.getInstance().select(map);
 		
+		//전체 게시글 갯수 조회
+		int rowTotal = BoardDAO.getInstance().getRowTotal();
+		
+		//페이지 메뉴 생성하기
+		String pageMenu = Paging.getPaging("board_list.do", 
+												nowPage, // 현재 페이지 번호 
+												rowTotal, // 전체 게시물 개수
+												Common.Board.BLOCKLIST, // 한페이지에 보여질 게시물 수
+												Common.Board.BLOCKPAGE// 페이지 수 
+												);
+		
+		
 		//조회수를 위해 저장해뒀던 "show"라는 정보를 세션에서 제거
 		HttpSession session = request.getSession();
 		request.getSession().removeAttribute("show");
@@ -59,6 +72,7 @@ public class BoardListAction extends HttpServlet {
 		
 		//바인딩
 		request.setAttribute("list", list);
+		request.setAttribute("pageMenu", pageMenu);
 		
 		//포워딩
 		RequestDispatcher disp = request.getRequestDispatcher("board_list.jsp");

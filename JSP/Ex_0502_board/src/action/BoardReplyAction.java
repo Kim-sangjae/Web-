@@ -60,7 +60,9 @@ public class BoardReplyAction extends HttpServlet {
 		
 		if(res1 > 0) {
 			
-			response.sendRedirect("board_list.do");
+			int page = Integer.parseInt(request.getParameter("page"));
+			
+			response.sendRedirect("board_list.do?page="+page);
 		}
 		
 		

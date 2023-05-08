@@ -20,6 +20,7 @@
 		method="get"
 		action="reply.do">
 		<input type="hidden" name="idx" value="${param.idx}">
+		<input type="hidden" name="page" value="${param.page}">
 		<table border="1">
 			<caption>:::답 글 쓰 기:::</caption>
 			<tr>

@@ -10,7 +10,7 @@
 <script type="text/javascript">
 
 	function reply(){
-		location.href="reply_form.jsp?idx=${vo.idx}";
+		location.href="reply_form.jsp?idx=${vo.idx}&page=${param.page}";
 	}
 	
 	function del(){
@@ -47,7 +47,7 @@
 			
 			if(json[0].param == 'yes'){
 				alert('삭제성공');
-				location.href="board_list.do";
+				location.href="board_list.do?page=${param.page}";
 			} else{
 				alert('삭제실패');
 			}
@@ -85,7 +85,7 @@
 		<tr>
 			<td colspan="2">
 				<!-- 목록으로 돌아가기 -->
-				<img src="img/btn_list.gif" onclick="location.href='board_list.do'">
+				<img src="img/btn_list.gif" onclick="location.href='board_list.do?page=${param.page}'">
 				<!-- 답글달기 -->
 				<c:if test="${vo.depth lt 1}">
 				<img src="img/btn_reply.gif" onclick="reply();">
