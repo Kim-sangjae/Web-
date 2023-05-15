@@ -1,0 +1,17 @@
+package com.korea.test_di;
+
+import org.springframework.stereotype.Controller;
+
+import service.BoardServiceImpl;
+
+@Controller
+public class BoardController {
+	
+	BoardServiceImpl service;
+	
+	public void setService(BoardServiceImpl service) {
+		this.service = service;
+	}
+	
+
+}

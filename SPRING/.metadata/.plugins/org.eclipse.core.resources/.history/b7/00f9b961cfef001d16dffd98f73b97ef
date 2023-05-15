@@ -1,0 +1,9 @@
+package com.korea.mvc;
+
+public class TestController {
+	
+	public TestController() {
+		System.out.println("---TestController의 기본생성자 생성----");
+	}
+
+}
