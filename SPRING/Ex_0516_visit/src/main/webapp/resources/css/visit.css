@@ -44,12 +44,14 @@ input:hover{
 	margin-top:30px;
 	box-shadow:5px 5px 5px blue;
 	border:1px solid skyblue; 
-	backgroud-color:skyblue;
 	border-radius:10px;
 	margin-bottom:30px;
 	line-height:2rem;
 	padding: 5px;
+	
+	
 }
+
 
 
 .type_content{
@@ -63,7 +65,18 @@ input:hover{
 	font-weight:bold;
 	box-shadow: inset 5px 5px 5px 5px rgb(133 127 127);
 	border-radius:5px;
+	
+	
+	
 }
+
+pre{
+	
+	overflow:hidden;
+	text-overflow:ellipsis;
+	
+}
+
 
 
 .type_name{
