@@ -2,7 +2,9 @@ package com.korea.fileupload;
 
 import java.io.File;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,12 @@ public class FileUploadController {
 	
 	@Autowired
 	HttpServletRequest request;
+	
+	@Autowired
+	HttpSession session;
+	
+	@Autowired
+	ServletContext application;
 	
 	// seesion,request와 같은 jsp,servlet에서 제공을 해주는 객체이기 때문에 스프링에서도 지원을한다
 	// jsp 에서 Servlet을 지원해주는 객체를 따로 생성하는 과정없이 자동으로 만들어주는 어노테이션
@@ -45,7 +53,7 @@ public class FileUploadController {
 		
 		
 		String webPath = "resources/upload";
-		String savePath = request.getServletContext().getRealPath(webPath);
+		String savePath = application.getRealPath(webPath);
 		
 		System.out.println(savePath);
 		

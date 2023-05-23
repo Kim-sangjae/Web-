@@ -27,7 +27,7 @@
 			return;
 		}
 		
-		f.method ="get";
+		f.method ="post";
 		f.action = "insert.do";
 		f.submit();
 		
@@ -36,7 +36,7 @@
 </head>
 <body>
 
-	<form>
+	<form enctype="multipart/form-data">
 		<table border="1" align="center" style="width:500px;">
 			<caption>:::방명록 작성하기:::</caption>
 			<tr>
@@ -50,6 +50,13 @@
 				<th>내용</th>
 				<td>												<!-- wrap속성 : on 을하면 끝에서 엔터값이 자동적용 -->
 					<textarea row="10" cols="40" name="content" style="resize:none; width:98%;" wrap="on"></textarea>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>이미지업로드</th>
+				<td>
+					<input type="file" name="photo">
 				</td>
 			</tr>
 			

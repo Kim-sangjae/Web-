@@ -60,14 +60,19 @@ input:hover{
 	min-height:100px;
 	height:auto;
 	display:flex;
-	justify-content:center;
+	justify-content:space-around;
 	align-items:center;
 	font-weight:bold;
 	box-shadow: inset 5px 5px 5px 5px rgb(133 127 127);
 	border-radius:5px;
 	
+}
+
+.type_content img{
 	
-	
+	height: 90%;
+	padding:15px;
+
 }
 
 pre{
@@ -87,3 +92,10 @@ pre{
 .type_regdate{
 	background:#ccf;
 }
+
+
+
+
+
+
+	

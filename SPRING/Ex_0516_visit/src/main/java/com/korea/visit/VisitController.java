@@ -1,15 +1,19 @@
 package com.korea.visit;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import dao.VisitDAO;
 import util.MyCommon;
@@ -18,7 +22,8 @@ import vo.VisitVO;
 @Controller
 public class VisitController {
 	
-	
+	@Autowired
+	ServletContext application;
 	
 	 VisitDAO visit_dao;
 	 
@@ -51,6 +56,47 @@ public class VisitController {
 	public String insert(VisitVO vo , HttpServletRequest request) {
 		String ip = request.getRemoteAddr();
 		vo.setIp(ip);
+		
+		//절대경로얻기
+		String webPath = "/resources/upload";
+		String savePath = application.getRealPath(webPath);
+		
+		System.out.println(savePath);
+		
+		
+		//업로드된 파일의 정보
+		MultipartFile photo = vo.getPhoto();
+		
+		String filename = "no_file";
+		
+		
+		//업로드된 파일이 존재한다면..
+		if(!photo.isEmpty()) {
+			//업로드된 실제 파일의 이름
+			filename = photo.getOriginalFilename();
+			
+			File saveFile = new File(savePath,filename);
+			if(!saveFile.exists()) {
+				saveFile.mkdirs();
+			} else {
+				// 동일파일명 방지
+				long time = System.currentTimeMillis();
+				filename = String.format("%d_%s",time,filename);
+				saveFile = new File(savePath,filename);
+			}
+			
+			
+			try {
+				photo.transferTo(saveFile);
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		vo.setFilename(filename);
+		
+		
 		int res = visit_dao.insert(vo);
 		
 		return "redirect:visit_list.do";
