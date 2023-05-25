@@ -15,7 +15,7 @@
 				return;
 			}
 			
-			var pwd = ${vo.pwd}; //원본비밀번호
+			var pwd = "${vo.pwd}"; //원본비밀번호
 			var c_pwd = document.getElementById("c_pwd").value;
 			
 			if(pwd != c_pwd){
@@ -42,6 +42,12 @@
 					alert("삭제 실패");
 				}
 			}
+		}
+		
+		
+		
+		function reply(){
+			location.href="reply_form.do?idx=${vo.idx}&page=${param.page}";
 		}
 			
 		</script>
@@ -78,7 +84,7 @@
 				
 				<!-- 답글달기 depth가 1보다 크면 답글을 못달게 만들기 -->
 				<c:if test="${vo.depth lt 1}">
-				<img src="resources/img/btn_reply.gif" onclick="reply();">
+				<img src="resources/img/btn_reply.gif" onclick="reply()">
 				</c:if>
 				
 				<!-- 삭제 -->

@@ -11,23 +11,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.annotation.RequestScope;
 
 import dao.BoardDAO;
+import dao.MemberDAO;
 import util.Common;
 import util.Paging;
 import vo.BoardVO;
+import vo.MemberVO;
 
 @Controller
 public class BoardController {
 	
 	@Autowired
 	HttpServletRequest request;
+	@Autowired
+	HttpSession session;
+	
 	
 	BoardDAO board_dao;
+	MemberDAO member_dao;
 	
 	
-	public BoardController(BoardDAO board_dao) {
+	
+	public BoardController(BoardDAO board_dao, MemberDAO member_dao) {
 		this.board_dao = board_dao;
+		this.member_dao = member_dao;
 	}
 	
 	@RequestMapping(value= {"/","board_list.do"})
@@ -59,6 +68,8 @@ public class BoardController {
 				
 		
 		request.getSession().removeAttribute("show");
+		
+		
 		model.addAttribute("list",list);
 		model.addAttribute("pageMenu",pageMenu);
 		
@@ -89,8 +100,15 @@ public class BoardController {
 	
 	
 	@RequestMapping("insert_form.do")
-	public String insert_form() {
+	public String insert_form(Model model) {
 		
+		MemberVO vo = (MemberVO)session.getAttribute("id");
+		if(vo == null) {
+			
+			return Common.VIEW_PATH + "login_form.jsp";
+		}
+		
+		model.addAttribute("vo",vo);
 		return Common.VIEW_PATH + "insert_form.jsp";
 	}
 	
@@ -128,5 +146,139 @@ public class BoardController {
 		
 	}
 	
+	
+	
+	
+	// 댓글 달기 페이지로 이동
+	@RequestMapping("reply_form.do")
+	public String reply_form(int idx, int page) {
+		return Common.VIEW_PATH + "reply_form.jsp?idx="+idx+"&page="+page;
+	}
+	
+	
+	
+	
+	//댓글달기
+		@RequestMapping("reply.do")
+		public String reply(BoardVO vo, int idx, int page) {
+			String ip = request.getRemoteAddr();
+			
+			//ref, step, depth 잘 따져야 한다.
+			
+			//같은 ref를 가지고 있는 데이터들 중에서 지금 내가 추가하려고 하는
+			//step값 이상인 애들을 +1을 미리 해놔야 하기 때문에 insert를 먼저하지 않는다
+			
+			//기준글의 idx를 이용해서 댓글을 달고싶은 게시글의 정보를 가져온다.
+			BoardVO baseVO = board_dao.selectOne(idx);
+			
+			//기준글에 step이상 값을 갖는 데이터에 step = step + 1 처리
+			int res = board_dao.update_step(baseVO);
+			
+			vo.setIp(ip);
+			
+			//댓글이 들어갈 위치 선정
+			vo.setRef(baseVO.getRef());
+			vo.setStep(baseVO.getStep()+1);
+			vo.setDepth(baseVO.getDepth()+1);
+			
+			int n = board_dao.reply(vo);
+			
+			if(n > 0) {
+				return "redirect:board_list.do?page="+page;
+			}
+			return null;
+		}
+		
+		
+		
+		
+		
+		@RequestMapping("login.do")
+		@ResponseBody
+		public String login(String id , String pw) {
+			
+			MemberVO vo = member_dao.loginCheck(id);
+			
+			if(vo == null) {
+				return "[{'result' : 'no_id'}]";
+			}
+			
+			if(!vo.getPw().equals(pw)) {
+				return "[{'result' : 'no_pw'}]";
+			}
+			
+			
+			session.setAttribute("id", vo);
+			
+			return "[{'result':'clear'}]";
+		}
+		
+		
+		
+		
+		@RequestMapping("login_form.do")
+		public String login_form() {
+			return Common.VIEW_PATH + "login_form.jsp";
+		}
+		
+		
+		
+		@RequestMapping("logout.do")
+		public String logout() {
+			session.removeAttribute("id");
+			
+			//세션에 들어있는 모든 속성을 제거한다.
+			//session.invalidate();
+			
+			return "redirect:board_list.do";
+		}
+		
+		
+		@RequestMapping("member_insert_form.do")
+		public String member_insert_form() {
+			return Common.VIEW_PATH + "member_insert.jsp";
+		}
+		
+		
+		
+		
+		// 중복체크 콜백
+		// 중복이 안되면 yes, 중복이 되면 no 
+		@RequestMapping("check_id.do")
+		@ResponseBody
+		public String check_id( String id ) {
+			
+			int res = member_dao.check_id(id);
+			
+			if(res > 0) {
+				
+				return "[{'res' : 'no'}]";
+				
+			}
+			
+			return "[{'res' : 'yes'}]";
+			
+		}
+		
+		
+		
+		@RequestMapping("member_insert.do")
+		public String member_insert (MemberVO vo) {
+			
+			int res = member_dao.insert(vo);
+			
+			
+			if(res > 0) {
+				return "redirect:board_list.do";
+			}
+			
+			return null;
+			
+		}
+		
+		
+		
+		
+		
 
 }

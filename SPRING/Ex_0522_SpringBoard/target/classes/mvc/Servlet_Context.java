@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.korea.bbs.BoardController;
 
 import dao.BoardDAO;
+import dao.MemberDAO;
 
 @Configuration
 @EnableWebMvc
@@ -34,8 +35,8 @@ public class Servlet_Context implements WebMvcConfigurer {
 
 	
 	@Bean
-	public BoardController boardController(BoardDAO board_dao) {
-		return new BoardController(board_dao);
+	public BoardController boardController(BoardDAO board_dao, MemberDAO member_dao) {
+		return new BoardController(board_dao, member_dao);
 	}
 
 
