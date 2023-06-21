@@ -1,0 +1,97 @@
+maven 레파지토리
+
+thymeleaf spring5 3.3.0.15.RELEASE
+Thymeleaf Extras Java8time » 3.0.4.RELEASE
+Thymeleaf Layout Dialect » 3.1.0
+
+
+jsp 
+1. <% %>
+2. ${ } EL식
+3. jstl + ${ } EL식
+
+
+
+타임리프 기본문법
+1. th:text = "${}"
+-  jsp의 El식과 마찬가지로 ${} 표현식으로 이용해서 컨트롤러에서 바인딩 할수 있다.
+
+2. th:href="@{링크}"
+- a태그의 href 속성과 동일하다.
+- 괄호안에다가 클릭시 이동하고자 하는 url을 입력하면 된다.
+- 링크의 일부를 식으로 변경하고 싶다면 경로에 {변수} 를 사용할 수 있다.
+
+
+<a th:href="@{/list.do}"> 링크 </a>
+<a th:href="@{/list.do?currentPageNum={page}}"> 링크 </a>
+<a th:href="@{/member/{memId}(memId={mem.id})}"> 링크 </a>
+
+
+3. th:with="${}"
+- 변수 형태의 값을 재정의 하는 속성
+- th:with 를 통해 새로운 변수값을 생성할 수 있다.
+<div th:with="userId=${number}"> 
+// jstl 에서 set과 비슷한 역할
+
+
+4. th:value="${}"
+- input 의 value 에 값을 삽입할 때 사용한다.
+- 여러개의 값을 넣을 땐 + 기호를 사용한다.
+<input id="userId" th:value="${userId} + 의 이름은 ${userName}"/>
+
+
+
+타임리프 식 객체
+- 식 객체를 사용하면 문자열의 처리나 , 날짜형식의 변환등의 작업을 할 수 있다.
+<span th:text="${#dates.format(date,'yyyy-MM-dd')}"> date </span>
+#strings : 문자열의 비교 , 문자열의 추출 (String타입을 위한 기능을 제공)
+#numbers : 숫자 타입을 위한 기능 제공
+#date, #calendars, #temporals : Date타입과, Calendar 타입, LocalDateTime 타입을 위한 기능을 제공
+#lists, #sets , #maps : List ,Set ,Map 을 위한 기능 제공
+
+
+
+Form 태그
+1. th:action="@{}"
+- <form> 태그 사용시 , 해당 경로로 요청을 보낼때 사용한다.
+
+2. th:object="${}"
+- <form>태그에서 데이터를 보내기 위해 submit을 할 때 데이터가 th:object에 설정된 객체에 담겨서 넘어간다.
+- Controller와 View사이의 VO클래스의 객체라고 생각하면 된다.
+
+model.addAttribute("list" , list);
+
+3. th:field = "*{}"
+- th:object속성과 함께 th:field를 이용해서 HTML태그에 멤버변수를 매핑할 수 있다.
+
+
+제어문
+1. th:if="${}" , th:unless="${}"
+- java의 조건문에 해당하는 속성
+- th:unless는 일반적인 언어의 else문과 달리 th:if처럼 따로조건을 지정해야한다 (th:if 는 참일때 조건 th:unless 는 거짓일때 조건)
+<td th:if="${status.even}" th:text="짝수" > </td>
+<td th:unless="${status.even}" th:text="홀수" > </td>
+
+
+2. th:switch, th:case
+- switch case문으로 제어할 태그를 th:block 으로 설정하고 그안에 코드를 작성한다.
+- th:block : 가상의 태그 ( 실제 태그자리를 차지하지 않는다 )
+<th:block th:switch="${userNum}>
+	<span th:case="1"> 권한1 </span>
+	<span th:case="2"> 권한2 </span>
+</th:block>
+
+
+3. th:each="변수 : ${list}"
+- JSTL 에서의 <c:foreach> 와 비슷한 역할
+- ${list} 에서 받아온 변수를 하나씩 가져온다는 뜻 변수의 이름은 마음대로 지정할 수 있다.
+ 
+ '
+ jstl에서 반복문은
+ <c:foreach var = "변수" items="${list}">
+ '	
+
+ 
+
+
+
