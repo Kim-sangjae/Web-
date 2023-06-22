@@ -1,6 +1,8 @@
 package com.korea.thyme;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +30,121 @@ public class ThymeControlloer {
 		
 		model.addAttribute("vo",vo);
 		
-		return "ex02";
+		return "/WEB-INF/views/ex02.html";
 		
 	}
+	
+	
+	@RequestMapping("ex03")
+	public String ex03(Model model) {
+		List<MemberVO> list = new ArrayList<MemberVO>();
+		
+		for(int i = 1; i <= 10 ; i++) {
+			MemberVO vo = new MemberVO();
+			vo.setMemNo(i);
+			vo.setMemId("user" + i);
+			vo.setMemNm("이름" + i);
+			vo.setRegDt(LocalDateTime.now());
+			
+			list.add(vo);
+		}
+		
+		model.addAttribute("list",list);
+		
+		return "ex03.html";
+	}
+	
+	
+	
+	@RequestMapping("ex04")
+	public String ex04(Model model) {
+		
+			List<MemberVO> list = new ArrayList<MemberVO>();
+			
+			for(int i = 1; i <= 10 ; i++) {
+				MemberVO vo = new MemberVO();
+				vo.setMemNo(i);
+				vo.setMemId("user" + i);
+				vo.setMemNm("이름" + i);
+				vo.setRegDt(LocalDateTime.now());
+				
+				list.add(vo);
+			}
+			
+			model.addAttribute("list",list);
+			
+			return "ex04";
+		
+	}
+	
+	
+	@RequestMapping("ex05")
+	public String ex05(Model model) {
+		
+		
+		List<MemberVO> list = new ArrayList<MemberVO>();
+		
+		for(int i = 1; i <= 10 ; i++) {
+			MemberVO vo = new MemberVO();
+			vo.setMemNo(i);
+			vo.setMemId("user" + i);
+			vo.setMemNm("이름" + i);
+			vo.setRegDt(LocalDateTime.now());
+			
+			list.add(vo);
+		}
+		
+		model.addAttribute("list",list);
+		
+		return "ex05";
+		
+	}
+	
+	
+	
+	@RequestMapping("ex06")
+	public String ex06() {
+		return "ex06";
+	}
+	
+	
+	@RequestMapping("ex07")
+	public String ex07(String param1 , String param2 , Model model) {
+		
+		model.addAttribute("param1",param1);
+		model.addAttribute("param2",param2);
+		
+		return "ex07";
+		
+	}
+	
+	@RequestMapping("ex08")
+	public String ex08(Model model) {
+		
+		MemberVO vo = new MemberVO();
+		model.addAttribute("vo",vo);
+		
+		return "ex08";
+	}
+	
+	
+	@RequestMapping("ex09")
+	public String ex09(MemberVO vo , Model model) {
+		
+	
+		model.addAttribute("vo",vo);
+		return "ex09";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

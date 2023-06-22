@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+ <form th:action="@{ex09}" method="get" th:object="${vo}">
+ 	<table border="1">
+ 		<tr>
+ 			<td>번호</td>
+ 			<td th:text="*{memNo}"></td>	
+ 		</tr>
+ 		<tr>
+ 			<td>아이디</td>
+ 			<td th:text="*{memId}"></td>	
+ 		</tr>
+ 		<tr>
+ 			<td>이름</td>
+ 			<td th:text="*{memNm}"></td>	
+ 		</tr>
+ 	</table>
+ </form>
+ 
+
+</body>
+</html>

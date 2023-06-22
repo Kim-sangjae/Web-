@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!-- th:object  선택 변수식 -->
+<!-- th:object , *{...} , th:field 3가지를 이용하면 <form>를 편하게 관리할 수 있다. -->
+<!-- 
+	1. th:object -> 바인딩한 객체를지정
+	2. *{...} : th:object에서 선택한 객체에 접근한다
+	3. th:field : html 태그에 id, name , value 속성을 자동으로 만들고 값을 채워준다.
+		- id와 name은 th:field 에서 지정한 변수의 이름과 똑같이 만들어진다.
+		- 필요할 시 id는 직접 입력하여 사용할 수 있다. 
+ -->
+ 
+ <form th:action="@{ex09}" method="get" th:object="${vo}">
+ 	<table border="1">
+ 		<tr>
+ 			<td>번호</td>
+ 			<td><input th:field="*{memNo}"></td>	
+ 		</tr>
+ 		<tr>
+ 			<td>아이디</td>
+ 			<td><input th:field="*{memId}"></td>	
+ 		</tr>
+ 		<tr>
+ 			<td>이름</td>
+ 			<td><input th:field="*{memNm}"></td>	
+ 		</tr>
+ 		<tr>
+ 			<button type="submit">등록</button>
+ 		</tr>
+ 	</table>
+ </form>
+
+
+</body>
+</html>
