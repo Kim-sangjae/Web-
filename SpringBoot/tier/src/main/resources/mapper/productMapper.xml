@@ -21,4 +21,10 @@
 	<select id="select" resultType="productVO">
 		select * from product
 	</select>
+	
+	<update id="updateStock">
+		update product
+		set product_stock = product_stock - #{productCount}
+		where product_id = #{productId}
+	</update>
 </mapper>

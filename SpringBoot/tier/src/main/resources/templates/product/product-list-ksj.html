@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	
+	
+	//체크박스 누를때마다 이벤트 발생시킨다.
+	function check(event){
+		
+		var checkBox = document.getElementsByClassName("order_checkBox");
+		var orderInput = document.getElementsByClassName("productCount");
+		
+		
+			
+			for (var i = 0; i < checkBox.length; i++) {
+				
+			    if (checkBox[i].checked == true) {
+					
+			      orderInput[i].readOnly = false;
+			      
+			    } else {
+					
+				 orderInput[i].value="";
+				 orderInput[i].readOnly = true;
+				 
+				}
+			    
+ 			 } //for문 
+
+	}
+	
+</script>
+
+<style>
+	div{
+		margin : 0 auto;
+		width: 1000px;
+	}
+	
+	table{
+		width: 100%;
+	}
+	button {
+		margin-top:10px;
+		width: 100%;
+	}
+</style>
+</head>
+<body>
+	<div>
+	<table border="1" >
+		<tr>
+			<th>주문여부</th>
+			<th>주문갯수</th>
+			<th>상품ID</th>
+			<th>상품이름</th>
+			<th>상품재고</th>
+			<th>상품가격</th>
+			<th>등록날짜</th>
+			<th>수정날짜</th>
+		</tr>
+		<tr th:each="list : ${list}" th:object="${list}">
+			<td><input type="checkbox" name="productId" class="order_checkBox" th:value="*{productId}" onclick="check(event)"></td>
+			<td><input type="text" class="productCount" readonly></td>
+			<td th:text="*{productId}"></td>
+			<td th:text="*{productName}"></td>
+			<td th:text="*{productStock}"></td>
+			<td th:text="*{productPrice}"></td>	
+			<td th:text="*{registerDate}"></td>	
+			<td th:text="*{updateDate}"></td>	
+		</tr>
+	</table>
+	
+	<button type="button" id="order-done" >주문완료</button>
+	
+	</div>
+	<form th:action="@{/order/done}" method="get" name="order-form">
+		<input type="text" name="productId">
+		<input type="text" name="productCount">
+	</form>
+
+</body>
+</html>
