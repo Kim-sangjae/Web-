@@ -1,11 +1,11 @@
-package com.korea.tier.mapper;
+package com.korea.rest.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.korea.tier.vo.OrderDTO;
-import com.korea.tier.vo.OrderVO;
+import com.korea.rest.vo.OrderDTO;
+import com.korea.rest.vo.OrderVO;
 
 @Mapper
 public interface OrderMapper {

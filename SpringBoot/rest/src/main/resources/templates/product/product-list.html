@@ -17,10 +17,35 @@
 		margin-top:10px;
 		width: 50%;
 	}
+	button.register-ready{
+		width:100%;
+	}
+	div.register-wrap{
+		display:none;
+	}
 </style>
 </head>
 <body>
 	<div>
+		
+		<button type="button" class="register-ready">상품 추가</button>
+		<div class="register-wrap" th:object="${productForm}">
+			<div>
+				<input type="text" th:field="*{productName}" placeholder="상품 이름">
+			</div>
+			
+			<div>
+				<input type="text" th:field="*{productStock}" placeholder="상품 재고">
+			</div>
+			
+			<div>
+				<input type="text" th:field="*{productPrice}" placeholder="상품 가격">
+			</div>
+			
+			<input type="button" class="register-done" value="등록">
+
+		</div> 
+
 	<table border="1" >
 		<tr>
 			<th>주문여부</th>
@@ -46,6 +71,7 @@
 	
 	<button type="button" id="order-done" >주문완료</button><button type="button" onclick="location.href='/order/list'">리스트</button>
 	</div>
+	
 	<form th:action="@{/order/done}" method="get" name="order-form">
 		productId : <input type="text" name="productId">
 		productCount : <input type="text" name="productCount">
@@ -59,6 +85,25 @@
 	const $done = $("#order-done"); // id속성이 order-done인 태그 선택
 	const $form = $("form[name='order-form']"); // name속성이 order-form인 form 태그 선택	
 	let $temp, i; //$temp 는 임시로 사용할 변수 , i 는 선택된 라디오버튼의 index값을 저장
+	
+	const $registerReady = $("button.register-ready");
+	const $registerDone = $("input.register-done");
+	
+	$registerReady.on("click",function(){
+		
+		$(this).hide();
+		$("div.register-wrap").show();
+		
+		
+	})
+	
+	$registerDone.on("click",function(){
+		
+		$("div.register-wrap").hide();
+		$registerReady.show();
+		
+	})
+	
 	
 	$radios.on('click',function(){ // radio버튼의 클릭 이벤트를 처리할 함수
 		i = $radios.index(this); // 변수 i에다 선택한 라디오버튼의 index값을 저장한다

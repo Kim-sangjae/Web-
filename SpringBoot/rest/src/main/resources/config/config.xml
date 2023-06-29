@@ -4,9 +4,9 @@
 <configuration>
 	
 	<typeAliases>
-		<typeAlias type="com.korea.tier.vo.ProductVO" alias="productVO"/>	
-		<typeAlias type="com.korea.tier.vo.OrderVO" alias="orderVO"/>	
-		<typeAlias type="com.korea.tier.vo.OrderDTO" alias="orderDTO"/>	
+		<typeAlias type="com.korea.rest.vo.ProductVO" alias="productVO"/>	
+		<typeAlias type="com.korea.rest.vo.OrderVO" alias="orderVO"/>	
+		<typeAlias type="com.korea.rest.vo.OrderDTO" alias="orderDTO"/>	
 	</typeAliases>
 	
 </configuration>

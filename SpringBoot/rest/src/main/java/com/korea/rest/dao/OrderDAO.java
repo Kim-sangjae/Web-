@@ -1,12 +1,12 @@
-package com.korea.tier.dao;
+package com.korea.rest.dao;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.korea.tier.mapper.OrderMapper;
-import com.korea.tier.vo.OrderDTO;
-import com.korea.tier.vo.OrderVO;
+import com.korea.rest.mapper.OrderMapper;
+import com.korea.rest.vo.OrderDTO;
+import com.korea.rest.vo.OrderVO;
 
 import lombok.RequiredArgsConstructor;
 

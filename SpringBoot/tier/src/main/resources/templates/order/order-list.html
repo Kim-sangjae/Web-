@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	span{
+		cursor:pointer;
+	}
+	span.on{
+		font-weight: bold;
+	}
+	
+	#container{
+		margin:0 auto;
+		width: 1000px;
+	}
+	table{
+		width: 100%;
+	}
+	button{
+		width: 100%;
+	}
+</style>
+</head>
+<body>
+	<div id="container">
+		<div class="sort">
+			<span class="on" id="recent" data-sort="recent">최신순</span>
+			<span class="" id="money" data-sort="money">결제금액순</span>
+		</div>
+		<hr>
+		
+		<table border="1">
+			<tr>
+				<th>상품 이름</th>
+				<th>상품 가격</th>
+				<th>주문 개수</th>
+				<th>결제 금액</th>
+				<th>주문 날짜</th>
+			</tr>
+			<th:block th:each="order : ${orders}">
+				<tr th:object="${order}">
+					<td th:text="*{productName}"></td>					
+					<td th:text="*{productPrice}"></td>					
+					<td th:text="*{productCount}"></td>					
+					<td th:text="*{orderPrice}"></td>					
+					<td th:text="*{orderDate}"></td>					
+				</tr>
+			</th:block>
+			
+		</table>
+		<button type="button" onclick="location.href='/product/list'">상품 목록</button>
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script th:inline="javascript">
+	//let sort = /*[[${sort}]]*/"recent" // controller에서 넘어온 sort값 저장 , 기본값은 recent
+	let sort = [[${sort}]];
+	const $spans = $("div.sort span"); // div 태그에 sort클래스를 가진 span태그를 $spans에 저장
+	
+	$("span").attr("class",""); //span 태그의 class 속성을 비워라
+	$("span#"+ sort).attr("class","on"); // span태그에 #recent또는 #money id 를 가진 태그의 class를 on으로 바꿔라
+	
+	$spans.on("click",function(){
+		location.href=`/order/list?sort=${$(this).data("sort")}`;
+	})
+</script>
+
+
+
+
+
+</html>
