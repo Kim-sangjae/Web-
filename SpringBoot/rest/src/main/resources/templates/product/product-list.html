@@ -1,150 +1,270 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 
-<style>
-	div{
-		margin : 0 auto;
-		width: 1000px;
-	}
-	
-	table{
-		width: 100%;
-	}
-	button {
-		margin-top:10px;
-		width: 50%;
-	}
-	button.register-ready{
-		width:100%;
-	}
-	div.register-wrap{
-		display:none;
-	}
-</style>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+		div {
+			margin: 0 auto;
+			width: 1000px;
+		}
+
+		table {
+			width: 100%;
+		}
+
+		button {
+			width: 50%;
+		}
+
+		button.register-ready {
+			width: 100%;
+		}
+
+		div.register-wrap {
+			display: none;
+			width: 500px;
+		}
+
+		div.register-wrap div {
+			width: 100%
+		}
+
+		div.register-wrap div input {
+			width: 100%
+		}
+
+		input.register-done {
+			width: 100%
+		}
+
+		span {
+			cursor: pointer;
+		}
+
+		span.on {
+			font-weight: bold;
+		}
+
+		#container {
+			margin: 0 auto;
+			width: 1000px;
+			display: none;
+		}
+
+		div.sort {
+			text-align: right;
+		}
+	</style>
 </head>
+
 <body>
 	<div>
-		
 		<button type="button" class="register-ready">상품 추가</button>
 		<div class="register-wrap" th:object="${productForm}">
 			<div>
 				<input type="text" th:field="*{productName}" placeholder="상품 이름">
 			</div>
-			
 			<div>
 				<input type="text" th:field="*{productStock}" placeholder="상품 재고">
 			</div>
-			
 			<div>
 				<input type="text" th:field="*{productPrice}" placeholder="상품 가격">
 			</div>
-			
 			<input type="button" class="register-done" value="등록">
+		</div>
 
-		</div> 
-
-	<table border="1" >
-		<tr>
-			<th>주문여부</th>
-			<th>주문갯수</th>
-			<th>상품ID</th>
-			<th>상품이름</th>
-			<th>상품재고</th>
-			<th>상품가격</th>
-			<th>등록날짜</th>
-			<th>수정날짜</th>
-		</tr>
-		<tr th:each="list : ${list}" th:object="${list}">
-			<td align="center"><input type="radio" name="productId"  th:value="*{productId}"></td>
-			<td><input type="text" class="productCount" readonly></td>
-			<td th:text="*{productId}"></td>
-			<td th:text="*{productName}"></td>
-			<td th:text="*{productStock}"></td>
-			<td th:text="*{productPrice}"></td>	
-			<td th:text="*{registerDate}"></td>	
-			<td th:text="*{updateDate}"></td>	
-		</tr>
-	</table>
-	
-	<button type="button" id="order-done" >주문완료</button><button type="button" onclick="location.href='/order/list'">리스트</button>
+		<table border="1">
+			<tr>
+				<th>단일 선택</th>
+				<th>주문 개수</th>
+				<th>상품 번호</th>
+				<th>상품 이름</th>
+				<th>상품 재고</th>
+				<th>상품 가격</th>
+				<th>등록 날짜</th>
+				<th>수정 날짜</th>
+			</tr>
+			<!--th:block -> 블록태그로 처리-->
+			<th:block th:each="product : ${list}">
+				<tr th:object="${product}">
+					<td><input type="radio" name="productId" th:value="*{productId}"></td>
+					<td><input type="text" class="productCount" readonly></td>
+					<td th:text="*{productId}"></td>
+					<td th:text="*{productName}"></td>
+					<td th:text="*{productStock}"></td>
+					<td th:text="*{productPrice}"></td>
+					<td th:text="*{registerDate}"></td>
+					<td th:text="*{updateDate}"></td>
+				</tr>
+			</th:block>
+		</table>
+		<button type="button" id="order-done">주문 완료</button><button type="button" id="order-list">주문 내역</button>
 	</div>
-	
-	<form th:action="@{/order/done}" method="get" name="order-form">
-		productId : <input type="text" name="productId">
-		productCount : <input type="text" name="productCount">
-	</form>
 
+	<div id="container">
+		<div class="sort">
+			<span class="on" id="recent" data-sort="recent">최신순</span>
+			<span class="" id="money" data-sort="money">결제금액순</span>
+		</div>
+		
+		<div class="order-list"></div>
+		
+	</div>
 </body>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script>
-	const $radios = $("input[type='radio']"); // input태그 중 type속성이 radio인 모든 태그 선택
-	const $inputs = $("input[class='productCount']"); // input태그 중 class속성이 productCount인 모든 태그 선택
-	const $done = $("#order-done"); // id속성이 order-done인 태그 선택
-	const $form = $("form[name='order-form']"); // name속성이 order-form인 form 태그 선택	
-	let $temp, i; //$temp 는 임시로 사용할 변수 , i 는 선택된 라디오버튼의 index값을 저장
+	//$() -> document.getElementBy[Id,Class,Name]();
+	const $radios = $("input[type='radio']"); //input태그 중 type속성이 radio인 모든 태그 선택
+	const $inputs = $("input[class='productCount']"); //input태그 중 class 속성이 productCount인 모든 태그 선택
+	const $done = $("#order-done"); //id속성이 order-done인 요소 선택
+	const $form = $("form[name='order-form']");//name 속성이 order-form인 form태그 선택
+	let $temp, i, sort; //$temp는 임시로 사용할 변수, i는 선택된 라디오버튼의 index값을 저장
+
+	const $registerReady = $("button.register-ready");//추가하기 버튼
+	const $registerDone = $("input.register-done");//등록하기 버튼
+
+	const $spans = $("div.sort span");//div요소 내부에 있는 class 속성값이 sort인 모든 span 태그
+	const $orderList = $("button#order-list") //id속성에 order-list값이 있는 버튼을 선택
 	
-	const $registerReady = $("button.register-ready");
-	const $registerDone = $("input.register-done");
+	const $ids = $("input[name='productId']")
 	
-	$registerReady.on("click",function(){
+	$done.on("click",function(){
+		$.ajax({
+			url :"/order/write",
+			type:"post",
+			data:JSON.stringify({productId:$ids.eq(i).val(),productCount: $inputs.eq(i).val()}),
+			contentType: "application/json; charset=utf-8",
+			success:function(){
+				$.ajax({
+					url:"/product/"+$ids.eq(i).val(),
+					success:function(products){
+						console.log(products.productStock);
+						$($("tr").eq(i+1).children()).eq(4).text(products.productStock);
+					}
+				});
+				$orderList.click();
+			}
+		})
+	})
+	
+	$spans.on("click",function(){
+		$spans.attr("class","");//전체 span태그의 class의 값을 비운다.
+		$(this).attr("class","on");//누른애만 class의 값을 on으로 바꾼다.
+		$orderList.click();// 버튼을 누른다.
 		
+	})
+
+	$orderList.on("click", function () {//주문내역 버튼을 눌렀을 때
+		$("#container").show(); //주문내역 테이블이 보이게 하기
+		$spans.each((i, span) => {
+			if ($(span).attr("class")) {
+				sort = $(span).data("sort");
+			}
+		});
+		//$spans.each()메서드를 사용하여 $spans 객체의 각 span 요소에 대한 반복문을 실행
+		//반복문은 index i와 요소 span을 파라미터로 받는 함수를 실행합니다.
+		//함수 내에서는 if문을 사용하여 현재 span태그 요소의 class 속성을 확인합니다.
+		//$(span).attr("class")를 통해 span 요소의 class 속성 값을 가져옵니다.
+		//JS에서는 숫자타입,문자열, 배열, 객체가 들어오면 참(true)로 간주된다.
+		//만약 class 속성이 존재한다면 $(span).data("sort")를 사용하여 span 요소의 sort데이터 값을 가져온다.
+		//그 값을 sort 변수에 할당한다.
+
+		$("span").attr("class", "");
+		$("span#" + sort).attr("class", "on");
+
+		$.ajax({
+			url: "/order/list/" + sort,
+			success: function (orders) {
+				let text = `
+					<table border="1">
+				<tr>
+				<th>상품 이름</th>
+				<th>상품 가격</th>
+				<th>주문 개수</th>
+				<th>결제 금액</th>
+				<th>주문 날짜</th>
+				</tr>
+				`;
+				orders.forEach(order =>{//컨트롤러에서 넘어온 데이터를 반복문을 통해 text에다 넣어주기
+					text+=`
+						<tr>
+							<td>${order.productName}</td>
+							<td>${order.productPrice}</td>
+							<td>${order.productCount}</td>
+							<td>${order.orderPrice}</td>
+							<td>${order.orderDate}</td>
+						</tr>
+					`;
+				});
+				text+=`</table>`;
+				
+				$("div.order-list").html(text);//text를 order-list 클래스를 가진 div에 집어넣겠다.
+				
+			}
+		})
+
+	})
+
+
+
+
+
+
+
+	$registerReady.on("click", function () {
+
 		$(this).hide();
 		$("div.register-wrap").show();
-		
-		
-	})
-	
-	$registerDone.on("click",function(){
-		
-		$("div.register-wrap").hide();
-		$registerReady.show();
-		
-	})
-	
-	
-	$radios.on('click',function(){ // radio버튼의 클릭 이벤트를 처리할 함수
-		i = $radios.index(this); // 변수 i에다 선택한 라디오버튼의 index값을 저장한다
-		
-		
-		
-		if($temp){ //$temp 는 현재 아무것도 정의 되어있지않다 자바스크립트에서는 아무것도 없을때 null 이 아닌 undefined(false) 상태이다 
-			$temp.prop("readOnly",true) // 변수를 사용하여 이전에 선택된 입력필드를 확인하고 , readOnly 를 true로 설정해서 읽기전용으로 변경
-			$temp.val('')
-		}
-		
-		$inputs.eq(i).prop("readOnly",false) // 클릭된 라디오 버튼에 해당하는 입력 필드를 선택, readOnly 속성을 false로 바꿔준다
-		$temp = $inputs.eq(i); // $temp 변수에 선택된 입력필드를 저장한다
+
 	});
-	
-	$done.on('click', function(){//order-done 버튼의 클릭 이벤트를 처리하는 함수
-	
-		console.log(typeof(i)) // 0 일때 number이면 undefined 라 값이 false가 된다 
-	
-		if(i == 0){
-			i="0";
+
+	$registerDone.on("click", function () {
+
+		/*$("div.register-wrap").hide();
+		$registerReady.show();
+		등록버튼을 누르면 새로고침이 될것이기 때문에 필요없다.*/
+
+		$.ajax({
+			url: "new",//url 요청
+			type: "post", //전송방식
+			data: JSON.stringify({productName: $("#productName").val(), productStock: $("#productStock").val(), productPrice: $("#productPrice").val()}),
+			//JSON.stringify() : 데이터는 원래 객체형태로 전달이 되는데, JSON.stringfy()를 사용하여 먼저 JSON문자열로 변환합니다.
+			contentType: "application/json; charset=utf-8",//요청 컨텐츠의 타입을 json으로 설정합니다.
+			success: function () { //성공적으로 처리된 경우 실행될 콜백함수 입니다.
+				location.reload();//현재 페이지를 새로고침 합니다.
+			}
+		});
+
+	});
+
+	$radios.on("click", function () {//라디오버튼의 클릭 이벤트를 처리할 함수
+		i = $radios.index(this); //변수 i에 선택한 라디오버튼의 index값을 저장
+		if ($temp) { //undifiend는 false로 인식을 한다.
+			$temp.prop("readOnly", true);//변수를 사용하여 이전에 선택된 입력 필드를 확인하고, readOnly 속성을 ture로 설정하여 읽기 전용으로 변경
+			$temp.val("");
 		}
-		
-		console.log(typeof(i)) // String으로 바꿔줘서 값이 0으로 자동 인식되게 해준다 (자바스크립트라 가능)
-			
-		if(i){
-			
+
+		$inputs.eq(i).prop("readOnly", false)//클릭된 라디오 버튼에 해당하는 입력 필드를 선택하고, readOnly 속성을 false로 설정하여 편집이 가능한 상태로 만듦
+		$temp = $inputs.eq(i); //$temp 변수에 선택된 입력필드를 저장합니다.
+	});
+
+	$done.on("click", function () {//order-done 버튼의 클릭 이벤트를 처리하는 함수
+		if (i == 0) {
+			i = '0'
+		}
+		if (i) {
+			console.log(i);
 			$form.find("input[name='productId']").val($radios.eq(i).val());
-			//form 내에서 name이 productId인 input태그를 선택하고 , 선택된 라디오 버튼의 값을 준다
+			//폼 내에서 name이 'productId'인 input태그를 선택하고, 선택된 라디오 버튼의 값을 준다.
 			$form.find("input[name='productCount']").val($inputs.eq(i).val());
-			//form 내에서 name이 productCount 인 input태그를 선택하고 선택된 입력필드의 값을 준다.
-			console.log($form.find("input[name='productId']").val())
-			console.log($form.find("input[name='productCount']").val())
-			$form.submit(); // 폼 제출
+			//폼 내에서 name이 'productCount'인 input태그를 선택하고, 선택된 입력 필드의 값을 준다.
+			console.log($form.find("input[name='productId']").val());
+			console.log($form.find("input[name='productCount']").val());
+			$form.submit();//폼을 제출한다.
 		}
-	})
-
+	});
 </script>
-
-
-
-
 
 </html>

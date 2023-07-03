@@ -10,34 +10,36 @@ import com.korea.rest.vo.ProductVO;
 
 import lombok.RequiredArgsConstructor;
 
-
-@Repository 
+@Repository
 @RequiredArgsConstructor
 public class ProductDAO {
-	
+
 	private final ProductMapper productMapper;
 	
-	
-	// 상품조회
+	//상품 조회
 	public List<ProductVO> findAll(){
-		
-		return productMapper.select();		
+		return productMapper.selectAll();
 	}
 	
-	
-	// 상품 추가
+	//상품 추가
 	public void save(ProductVO productVO) {
-		
 		productMapper.insert(productVO);
 	}
 	
-	
+	//상품재고 수정
 	public void setProductStock(OrderVO orderVO) {
-		
 		productMapper.updateStock(orderVO);
+	}
+	
+	//주문 조회
+	public ProductVO getProduct(int productId) {
+		return productMapper.select(productId);
 	}
 	
 	
 	
-
+	
+	
+	
+	
 }

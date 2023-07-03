@@ -16,18 +16,16 @@ public class OrderDAO {
 	
 	private final OrderMapper orderMapper;
 	
-	
 	//주문하기
 	public void save(OrderVO orderVO) {
-		
 		orderMapper.insert(orderVO);
 	}
 	
-	public List<OrderDTO> selectAll(String sort){
-		
-		List<OrderDTO> list =  orderMapper.selectAll(sort);
-		
-		return list;
+	//주문내역
+	public List<OrderDTO> findAll(String sort){
+		return orderMapper.selectAll(sort);
 	}
+	
+	
 
 }

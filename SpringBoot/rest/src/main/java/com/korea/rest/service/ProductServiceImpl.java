@@ -15,18 +15,21 @@ public class ProductServiceImpl implements ProductService {
 
 	private final ProductDAO productDAO;
 	
-	
 	@Override
 	public List<ProductVO> getList() {
-		
 		return productDAO.findAll();
 	}
 
 	@Override
 	public void register(ProductVO productVO) {
-		
 		productDAO.save(productVO);
 	}
+
+	@Override
+	public ProductVO getProduct(int productId) {
+		return productDAO.getProduct(productId);
+	}
+	
 	
 
 }

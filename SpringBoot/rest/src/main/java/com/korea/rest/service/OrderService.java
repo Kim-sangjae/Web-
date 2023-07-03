@@ -14,27 +14,18 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
-	
+
 	private final OrderDAO orderDAO;
 	private final ProductDAO productDAO;
 	
-	
-	// 주문하기 동시에 재고 수정
+	//주문하기 & 재고 수정
 	public void order(OrderVO orderVO) {
-		
 		productDAO.setProductStock(orderVO);
 		orderDAO.save(orderVO);
-		
 	}
 	
-	public List<OrderDTO> getList (String sort) {
-		
-		List<OrderDTO> list = orderDAO.selectAll(sort);
-		
-		return list;
-		
+	//주문내역
+	public List<OrderDTO> getList(String sort){
+		return orderDAO.findAll(sort);
 	}
-	
-	
-
 }
