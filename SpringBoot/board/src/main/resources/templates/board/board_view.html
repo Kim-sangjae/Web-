@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	a{
+		text-decoration: none;
+	}
+</style>
+</head>
+<body>
+	<table border="1" th:object="${vo}">
+		<caption>:::게시글 상세보기:::</caption>
+		<tr>
+			<th>제목</th>
+			<td th:text="*{subject}"></td>
+		</tr>
+		<tr>
+			<th>작성자</th>
+			<td th:text="*{name}"></td>
+		</tr>
+		<tr>
+			<th>작성일</th>
+			<td th:text="*{regdate}"></td>
+		</tr>
+			<tr>
+			<th>ip</th>
+			<td th:text="*{ip}"></td>
+		</tr>
+		<tr>
+			<th>내용</th>
+			<td width="500px" height="200px" th:text="*{content}"></td>
+		</tr>
+		<tr>
+			<th>비밀번호</th>
+			<td><input type="password" id="c_pwd"></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<a th:href="@{/board/board_list(page=${param.page})}">
+					<img src="/img/btn_list.gif">
+				</a>
+				<th:block th:if="${vo.depth lt 1}">
+					<!--답변버튼-->
+					<img src="/img/btn_reply.gif">
+				</th:block>
+				<!--삭제버튼-->
+				<img src="/img/btn_delete.gif" id="del">
+			</td>
+		</tr>
+	</table>
+		
+
+</body>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script th:inline="javascript">
+	
+	let pwd = /*[[${vo.pwd}]]*/'';
+	let $c_pwd = $("input[type='password']");
+	
+	$("img[id='del']").on("click",function(){
+		
+		
+		if($c_pwd.val() == ''){
+			alert("비밀번호를 입력하세요");
+			return;
+		}
+		
+		
+		if(pwd != $c_pwd.val()){
+			alert("비밀번호 불일치");
+			return;
+		}
+		
+		
+		if(!confirm('삭제하시겠습니까?')){
+			return;
+		}
+		
+		
+	})
+</script>
+</html>

@@ -25,5 +25,23 @@ public class BoardDAO {
 	public int getRowTotal() {
 		return boardMapper.getRowTotal();
 	}
+	
+	public BoardVO selectOne(int idx) {
+		return boardMapper.selectOne(idx);
+	}
+	
+	
+	public int update_readhit(int idx) {
+		
+		return boardMapper.update_readhit(idx);
+		
+	}
+	
+	
+	public int insert(BoardVO vo) {
+		int res = boardMapper.insert(vo);
+		
+		return res;
+	}
 
 }

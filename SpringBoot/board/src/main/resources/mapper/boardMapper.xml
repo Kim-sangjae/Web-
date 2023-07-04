@@ -7,6 +7,7 @@
 <select id="selectList" resultType="boardVO" >
 	select * from (select rank() over(order by ref desc,step) no, b.* from board b)
 	where no between #{start} and #{end}
+	order by idx desc
 </select>
 
 
@@ -14,6 +15,39 @@
 <select id="getRowTotal" resultType="int">
 	select count(*) from board
 </select>
+
+
+<!-- 게시물 한건조회 (idx) -->
+<select id="selectOne" resultType="boardVO">
+	select * from board where idx = #{idx}
+</select>
+
+
+<!-- 조회수 증가 -->
+<update id="update_readhit" >
+	update board set readhit = readhit+1 where idx=#{idx}
+</update>
+
+
+<!--  게시물 등록 -->
+<insert id="insert" parameterType="boardVO">
+insert into board values(
+	seq_board_idx.nextval,
+	#{name},
+	#{subject},
+	#{content},
+	#{pwd},
+	#{ip},
+	sysdate,
+	0,
+	seq_board_idx.currval,
+	0,
+	0,
+	0
+
+)
+</insert>
+
 
 	
 </mapper>

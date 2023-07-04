@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	a{
+		text-decoration: none;
+	}
+	table{
+		border-collapse: collapse;
+	}
+</style>
 </head>
 <body>
 	<table border="1" width="700">
@@ -19,7 +27,8 @@
 		<!--반복문을 통해 controller에 넘어온 데이터 출력-->
 		<th:block th:each="vo:${list}">
 			<tr th:object="${vo}">
-				<td align="center" th:text="*{idx}"></td>
+				<td align="center" th:text="*{idx}">
+				</td>
 				
 				<td>
 					
@@ -37,7 +46,7 @@
 					
 					<!-- del_info가 -1이 아니라면 삭제가 안된글이기떄문에 누를수있게 한다-->
 					<th:block th:if="*{del_info ne -1}">
-						<a th:href="@{/board/view(idx=*{idx},page=${param.page})}" style="text-decoration: none;" >
+						<a th:href="@{/board/view(idx=*{idx},page=${param.page})}" >
 							<font color="black" th:text="*{subject}"></font>
 						</a>
 					</th:block>
@@ -62,13 +71,31 @@
 		</th:block>
 		
 		<tr>
-			<td colspan="5" align="center" th:text="${pageMenu}"></td>
+			<td colspan="5" align="center">
+				<div id="pageMenu"></div>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="5" align="right">
-				<img src="/img/btn_reg.gif" onclick="location.href='insert_form'" style="cursor:pointer;">
+				<a th:href="@{/board/insert_form(page=${param.page})}">
+				<img src="/img/btn_reg.gif" style="cursor:pointer;">
+				</a>
 			</td>
 		</tr>
 	</table>
 </body>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script th:inline="javascript">
+	// pageMenu 변수에 controller에서 넘어온 pageMenu 담아주기
+	let pageMenu = /*[[${pageMenu}]]*/'';
+	
+	//pageMenu 라는 id 를 가진 태그 안에 컨트롤러에서 받아온 pageMenu 값을 넣어준다
+	$('div#pageMenu').html(pageMenu);
+</script>
+
+
+
+
+
 </html>
