@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+	  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korea.board.mapper.BoardMapper">
 
-<!-- 페이지별 게시물 조회  -->
-<select id="selectList" resultType="boardVO" >
-	select * from (select rank() over(order by ref desc,step) no, b.* from board b)
-	where no between #{start} and #{end}
-	order by idx desc
-</select>
-
-
-<!-- 전체 게시물 수 조회  -->
-<select id="getRowTotal" resultType="int">
-	select count(*) from board
-</select>
-
-
-<!-- 게시물 한건조회 (idx) -->
-<select id="selectOne" resultType="boardVO">
-	select * from board where idx = #{idx}
-</select>
-
-
-<!-- 조회수 증가 -->
-<update id="update_readhit" >
-	update board set readhit = readhit+1 where idx=#{idx}
-</update>
-
-
-<!--  게시물 등록 -->
-<insert id="insert" parameterType="boardVO">
-insert into board values(
-	seq_board_idx.nextval,
-	#{name},
-	#{subject},
-	#{content},
-	#{pwd},
-	#{ip},
-	sysdate,
-	0,
-	seq_board_idx.currval,
-	0,
-	0,
-	0
-
-)
-</insert>
-
-
+	<!-- 페이지별 게시물 조회 -->
+	<select id="selectList" resultType="boardVO">
+		select * from (select rank() over(order by ref desc,step) no, b.* from board b)
+		where no between #{start} and #{end}
+	</select>
+	
+	<!-- 전체 게시물 수 조회 -->
+	<select id="getRowTotal" resultType="int">
+		select count(*) from board
+	</select>
+	
+	<!-- 게시물 한건 조회 -->
+	<select id="selectOne" resultType="boardVO">
+		select * from board where idx = #{idx}
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="update_readhit">
+		update board set
+		readhit = readhit + 1
+		where idx = #{idx}
+	</update>
+	
+	<!-- 게시글 추가 -->
+	<insert id="insert">
+		insert into board values(
+			seq_board_idx.nextVal,
+			#{name},
+			#{subject},
+			#{content},
+			#{pwd},
+			#{ip},
+			sysdate,
+			0,
+			seq_board_idx.currVal,
+			0,
+			0,
+			0
+		)
+	</insert>
+	
+	<!-- 게시글삭제(된것처럼 업데이트) -->
+	<update id="del_update">
+			update board set
+			subject = #{subject},
+			name = #{name},
+			del_info = -1
+			where idx = #{idx}
+	</update>
 	
 </mapper>
+
+
+
+
+
+
+
+
+

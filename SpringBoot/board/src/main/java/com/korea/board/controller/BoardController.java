@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.korea.board.common.Common;
@@ -60,6 +62,11 @@ public class BoardController {
 		request.getSession().removeAttribute("show");
 		
 		model.addAttribute("list",list);
+		
+//		for(BoardVO vo : list) {
+//			System.out.println("del_info: " + vo.getDelinfo());
+//		}
+		
 		model.addAttribute("pageMenu",pageMenu);
 		
 		return "/board/board_list";
@@ -100,8 +107,16 @@ public class BoardController {
 			return new RedirectView("/board/board_list?page="+page);
 		}
 			return null;
+	}
+	
+	@PostMapping("del")
+	@ResponseBody
+	public void delete(int idx) {
+		BoardVO vo = boardDAO.selectOne(idx);
+		vo.setSubject("이미 삭제된 게시글입니다.");
+		vo.setName("unknown");
 		
-		
+		boardDAO.del_update(vo);
 	}
 	
 }

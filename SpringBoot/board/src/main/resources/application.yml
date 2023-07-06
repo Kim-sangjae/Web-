@@ -1,8 +1,7 @@
 server:
   port: 10000
   
-
-#JDBC dataSource
+#JDBC datasource
 spring:
   datasource:
     hikari:
@@ -10,4 +9,5 @@ spring:
       jdbc-url: jdbc:oracle:thin:@localhost:1521:XE
       username: hr
       password: hr
- 
+  
+  

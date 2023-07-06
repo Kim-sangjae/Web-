@@ -13,35 +13,31 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class BoardDAO {
-	
-	
+
 	private final BoardMapper boardMapper;
 	
 	public List<BoardVO> selectList(HashMap<String,Integer> map){
 		return boardMapper.selectList(map);
 	}
 	
-	
 	public int getRowTotal() {
 		return boardMapper.getRowTotal();
-	}
+	}	
 	
 	public BoardVO selectOne(int idx) {
 		return boardMapper.selectOne(idx);
 	}
 	
-	
 	public int update_readhit(int idx) {
-		
 		return boardMapper.update_readhit(idx);
-		
 	}
-	
 	
 	public int insert(BoardVO vo) {
-		int res = boardMapper.insert(vo);
-		
-		return res;
+		return boardMapper.insert(vo);
 	}
-
+	
+	public int del_update(BoardVO vo) {
+		return boardMapper.del_update(vo);
+	}
+	
 }

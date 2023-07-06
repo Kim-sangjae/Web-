@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="www.thymeleaf.org">
+<html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
 <style>
-	a{
+	a {
 		text-decoration: none;
 	}
-	table{
+
+	table {
 		border-collapse: collapse;
 	}
 </style>
-</head>
+
 <body>
 	<table border="1" width="700">
 		<tr>
@@ -24,52 +27,42 @@
 			<th>작성일</th>
 			<th>조회수</th>
 		</tr>
-		<!--반복문을 통해 controller에 넘어온 데이터 출력-->
-		<th:block th:each="vo:${list}">
+		<!--반복문을 통해 controll에서 넘어온 데이터 출력-->
+		<th:block th:each="vo : ${list}">
 			<tr th:object="${vo}">
-				<td align="center" th:text="*{idx}">
-				</td>
-				
+				<td align="center" th:text="*{idx}"></td>
+
 				<td>
-					
-					
-					<!-- 만약 depth가 0보다 크면 depth 만큼 반복하여 띄어쓰기를 해라-->
-					<th:block th:if="*{depth > 0}"> <!--.sequence(start,end) : start 부터 end까지 1씩 증가
-														.sequence(start,end,step) : start부터 end 까지 step씩 증가-->
+					<!--만약 depth가 0보다 크면 depth만큼 반복하여 띄어쓰기를 해라-->
+					<th:block th:if="${vo.depth > 0}"> <!--.sequence(start,end) : start부터 end까지 1씩 증가
+															   .sequence(start,end,step) : start부터 end까지 step씩 증가-->
 						<span th:each="depth : ${#numbers.sequence(1,vo.depth)}">&nbsp;</span>
 					</th:block>
-					
-					<!--depth 가 0이 아니면 댓글이기 때문에 ㄴ 을 붙인다-->
-					<th:block th:if="*{depth ne 0}">ㄴ</th:block>
-					
-					
-					
-					<!-- del_info가 -1이 아니라면 삭제가 안된글이기떄문에 누를수있게 한다-->
-					<th:block th:if="*{del_info ne -1}">
-						<a th:href="@{/board/view(idx=*{idx},page=${param.page})}" >
+
+					<!--depth가 0이 아니면 댓글이기 때문에 ㄴ를 붙혀라-->
+					<th:block th:if="${vo.depth ne 0}">ㄴ</th:block>
+
+					<!--delinfo가 -1이 아니라면 삭제가 안된 글이기 때문에 누를 수 있게 만들자.-->
+					<th:block th:if="${vo.delinfo ne -1}">
+						<a th:href="@{/board/view(idx=*{idx},page=${param.page})}">
 							<font color="black" th:text="*{subject}"></font>
 						</a>
 					</th:block>
-					
-					
-					
-					<!-- del_Info 가 -1 삭제상태 -->
-					<th:block th:if="*{del_info eq -1}">
-							<font color="gray" th:text="이미 삭제 된 글입니다."></font>
-					</th:block>
-					
 
-					
+					<!--delinfo가 -1이라면 삭제된 글이기 때문에 누를 수 없게 만들자.-->
+					<th:block th:if="${vo.delinfo eq -1}">
+						<font color="gray">이미 삭제된 글입니다.</font>
+					</th:block>
 				</td>
-				
-				<!-- del_info 가 -1 이면 unknown 으로 나오게 하고 아니면 작성자명 나오기-->
-				<td th:if="*{del_info eq -1}" th:text="unknown"></td>
-				<td th:unless="*{del_info eq -1}" th:text="*{name}"></td>
+
+				<!--delinfo가 -1이면 unknown으로 나오게 하고, 아니면 작성자명이 나오게 하기-->
+				<td th:if="${vo.delinfo eq -1}" th:text="unknown"></td>
+				<td th:unless="${vo.delinfo eq -1}" th:text="*{name}"></td>
 				<td th:text="${#strings.substring(vo.regdate,0,10)}"></td>
 				<td th:text="*{readhit}"></td>
 			</tr>
 		</th:block>
-		
+		<!--반복문을 통해 controll에서 넘어온 데이터 출력-->
 		<tr>
 			<td colspan="5" align="center">
 				<div id="pageMenu"></div>
@@ -78,21 +71,27 @@
 		<tr>
 			<td colspan="5" align="right">
 				<a th:href="@{/board/insert_form(page=${param.page})}">
-				<img src="/img/btn_reg.gif" style="cursor:pointer;">
+					<img src="/img/btn_reg.gif" style="cursor:pointer;">
 				</a>
 			</td>
 		</tr>
 	</table>
 </body>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
 <script th:inline="javascript">
-	// pageMenu 변수에 controller에서 넘어온 pageMenu 담아주기
-	let pageMenu = /*[[${pageMenu}]]*/'';
-	
-	//pageMenu 라는 id 를 가진 태그 안에 컨트롤러에서 받아온 pageMenu 값을 넣어준다
-	$('div#pageMenu').html(pageMenu);
+
+	//pageMenu 변수에 controller에서 넘어온 pageMenu 담아주기
+	let pageMenu = /*[[${pageMenu}]]*/''
+
+	//pageMneu라는 id를 가진 div에 pageMenu를 넣어주자.
+	$("div#pageMenu").html(pageMenu);
+
+
 </script>
+
+
+
+
 
 
 
