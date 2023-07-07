@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WeightActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="top"/>
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#fff"
+            android:gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="btn1"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="btn2"
+            android:layout_weight="1"/>
+
+    <!--        weight 는 view에 가중치를 주는 속성-->
+    <!--        각각의 컴포넌트들의 크기를 조절해준다-->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#8ac"
+            android:orientation="horizontal">
+        </LinearLayout>
+<!--    높이를 match 로 잡아버리면 공간을 다 차지하지만-->
+<!--    밑에 다른 요소들이 생길경우 자리가 없어서 보이지 않는다-->
+<!--    밑에 다른 요소가 올 경우를 생각해서-->
+<!--    높이를 weight 속성으로 주게 되면 -->
+<!--    아래 요소가 생겼을시 요소크기만큼 최소한의 공간을 주게된다.-->
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="bottom"/>
+
+</LinearLayout>
