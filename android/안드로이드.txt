@@ -59,3 +59,103 @@ R클래스
 - 객체가 id를 부여받는 순간 R.java가 16진수의 정수형태로 값을 저장한다.
 - 심지어 레이아웃을 만들때 조차 정수로 저장한다.
 - 빌드 할때마다 그 값이 바뀐다.
+
+
+
+//////////////////////////////////////////////////////////////////
+
+Visibility속성
+- 사용자와의 상호작용을 통해 View를 숨기거나 표시하고 싶을때 visibility 속성으로 해결한다
+- visibility 속성은 View클래스에 정의되어 있으며 모든 View를 대상으로 사용할 수 있다.
+
+속성의 종류
+
+visible : 보임
+
+invisible : 안보임 하지만 공간은차지
+
+gone : 안보임 공간도 차지하지않는다
+
+
+
+//////////////////////////////////////
+
+Selector
+
+- View의 각 상태의 drawable을 달리하여 효과를 줄 수 있는 방법
+- background와 textColor 등 에 적용 할 수 있다.
+
+
+- Selector 설정 파일을 만들어야한다
+	drawable 폴더 - >  Drawavle ResourceFile 생성 (xml파일 생성됨)
+
+속성
+android:states_pressed : 뷰가 눌렸을 때 (터치나 클릭이 발생했을 때)
+
+state_focused : 뷰에 포커스가 위치 했을 때 (ex : EidtText를 입력했을때)
+
+state_selected : 뷰를 선택했을 때 ( 방향키로 이동하다가 선택했을때)
+
+state_checkable : 체크 가능한 상태일 때 (chaeckbox를 체크할 수 있는 상태일때)
+
+state_checked : 체크된 상태일 때
+
+
+
+///////////////////////////////////
+ActionBar 상단 오른쪽 더보기 메뉴 만들기
+
+res 폴더 -> 새로운 폴더로 "menu" 를 만든다 (이름 고정)
+	-> new -> Menu ResourceFile 생성
+
+
+inflate 를 통해 레이아웃을 다른 레이아웃에 붙여야한다
+setContentView();
+
+
+
+public class MenuActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu);
+    }
+
+
+    @Override // 이메서드가 없으면 ActionBar 오른쪽위에 메뉴바가 활성화되지않는다
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.my_menu,menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    // 메뉴바 각 메뉴의 이벤트 처리를 위한 메서드
+    // 매개변수인 item이 어떤 메뉴가 눌러졌는지 알 수 있다
+    @Override 
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        
+        if(itemId == R.id.menu1){
+//            Toast.makeText(메뉴객체 , 텍스트 , 알림띄울 시간)
+            Toast.makeText(MenuActivity.this,"앱 소개 누름",Toast.LENGTH_SHORT).show();
+        } else if(itemId == R.id.menu2){
+            Toast.makeText(MenuActivity.this,"이메일 누름",Toast.LENGTH_SHORT).show();
+        }else {
+            finish(); // 현재 띄워져있는 Activity 한개를 종료
+        }
+
+        return true;
+
+    }
+}
+
+
+
+
+
+
+
+
