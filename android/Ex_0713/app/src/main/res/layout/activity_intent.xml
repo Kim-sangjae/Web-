@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".IntentActivity"
+    android:gravity="center">
+
+
+    <!--전화 거는 페이지로 이동-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Call"
+        android:id="@+id/btn_call"/>
+
+    <!--문자 페이지-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SMS"
+        android:id="@+id/btn_sms"/>
+
+    <!--카메라 페이지-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Camera"
+        android:id="@+id/btn_camera"/>
+
+    <!--갤러리로 이동-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gallery"
+        android:id="@+id/btn_gallery"/>
+
+    <!--내가지정한 링크로 이동-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Link"
+        android:id="@+id/btn_link"/>
+
+    <!--내가 직접 만든 Activity로 이동-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="next"
+        android:id="@+id/btn_next"/>
+
+
+
+
+</LinearLayout>
