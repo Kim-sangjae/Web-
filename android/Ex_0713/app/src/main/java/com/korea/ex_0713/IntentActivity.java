@@ -119,7 +119,13 @@ public class IntentActivity extends AppCompatActivity {
                 startActivity(i);
                 
             }else if(id == R.id.btn_next){
-                
+
+                // 다른 액티비티로 전환          현재 액티비티            이동할 액티비티
+                i= new Intent(IntentActivity.this, IntentSubActivity.class);
+
+                startActivity(i);
+
+                // 계속 페이지를 이동하는 것이다 ( 뒤로가기가 쌓임 )
             }
 
 
