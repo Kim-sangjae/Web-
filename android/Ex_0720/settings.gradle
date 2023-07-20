@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" } //지문인식 깃허브에서 가져온 리퍼지토리주소
+        jcenter() //패턴을 위한 리퍼지토리
+    }
+}
+rootProject.name = "Ex_0720"
+include ':app'
