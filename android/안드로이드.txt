@@ -1,5 +1,21 @@
 지문인식 깃허브
 https://github.com/ajalt/reprint
+권한 설정 깃허브
+https://github.com/ParkSangGwon/TedPermission
+
+///////////////////////////////////////////////////////
+DB 연결
+https://sourceforge.net/projects/sqlitebrowser/
+-> https://github.com/sqlitebrowser/sqlitebrowser
+-> Windows -> https://sqlitebrowser.org/dl/#windows -> DB Browser for SQLite - Standard installer for 64-bit Windows
+-> 모두 체크후 설치
+
+db 테이블 생성하고 ex) myDb.db
+프로젝트에 assets 폴더 생성후 붙여넣기
+
+
+
+
 
 액티비티의 생명주기(기한)
 - 액티비티는 ui 와 가장 밀접한 관련을 갖기 때문에
