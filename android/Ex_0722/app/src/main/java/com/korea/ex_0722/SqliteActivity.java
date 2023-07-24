@@ -10,15 +10,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 public class SqliteActivity extends AppCompatActivity {
     //안드로이드에서 기본으로 제공하는 클래스
@@ -82,12 +85,45 @@ public class SqliteActivity extends AppCompatActivity {
 
             if(id == R.id.btn_all){
                 // 전체 조회
+                searchQuery("SELECT * FROM freind");
             }else if(id == R.id.btn_search){
                 // 검색 조회
+                String name = et_name.getText().toString().trim();
+                if(name.length() == 0){
+                    Toast.makeText(SqliteActivity.this,"검색할 이름을 입력하세요",Toast.LENGTH_SHORT).show();
+                }else{
+                    searchQuery(String.format("select * from freind where name like '%%%s%%'",name));
+                }
+
             }else if(id == R.id.btn_insert){
                 // 추가하기
+                String iname = et_name.getText().toString().trim();
+                String iphone = et_phone.getText().toString().trim();
+                String iage = et_age.getText().toString().trim();
+
+                if(iname.length() == 0 ){
+                    Toast.makeText(SqliteActivity.this,"추가할 이름을 입력해주세요",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(iphone.length() == 0 ){
+                    Toast.makeText(SqliteActivity.this,"추가할 번호를 입력해주세요",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(iage.length() == 0 ){
+                    Toast.makeText(SqliteActivity.this,"추가할 나이를 입력해주세요",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int m_age = Integer.parseInt(iage);
+
+                searchQuery(String.format("insert into freind values ('%s','%s',%d)",iname,iphone,m_age));
+                searchQuery("SELECT * FROM freind");
+
             }else if(id == R.id.btn_del){
                 // 삭제하기
+                String dname = et_name.getText().toString().trim();
+                searchQuery(String.format("delete from freind where name = '%s'",dname));
+                searchQuery("SELECT * FROM freind");
             }
         }
 
@@ -96,9 +132,34 @@ public class SqliteActivity extends AppCompatActivity {
 
     // 쿼리문 수행을 위한 메서드
     public void searchQuery(String query){
-        Cursor m = mDatabase.rawQuery(query,null);
+        Cursor c = mDatabase.rawQuery(query,null);
         // 지금 db만 에뮬레이터에 복사해놓은 상태고 실제로는 어디에 연결 되는지 지정하지 않았다
         // mdatabase 를 통해서 rawQuery라는 메서드를 가지고 쿼리문을 요청해야한다.
+
+        // c.getColumnCount : 테이블의 컬럼수(name,phone,age) - 3개
+        String[] col = new String[c.getColumnCount()];
+
+        col = c.getColumnNames();
+        //col[0] : name
+        //col[1] : phone
+        //col[2] : age
+
+        String[] str = new String[c.getColumnCount()];
+        String result = ""; // 최종 결과를 저장해둘 변수
+
+
+        Log.i("my" , Arrays.toString(col));
+
+        //행 단위로 한줄씩 커서가 이동
+        while(c.moveToNext()){
+            for(int i = 0; i<col.length; i++){
+                str[i] = ""; // 빈문자열을 넣지않으면 null값이 들어가서
+                str[i] += c.getString(i); // null홍길동 이 되버린다
+                result+= col[i] + ":" + str[i] +"\n";
+            }
+        }
+        result_txt.setText(result);
+
     }
 
 

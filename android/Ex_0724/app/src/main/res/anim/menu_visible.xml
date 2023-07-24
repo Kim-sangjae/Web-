@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--set : 여러개의 속성(투명도 , 좌표 , 회전 등) 을 하나로 묶어서 관리할 수 있는 영역-->
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--숨겨져 있던 메뉴를 보여주는 애니메이션 처리-->
+    <!--android:fromAlpha="0.0" : 애니메이션 시작값 (0.0) 완전 투명-->
+    <!--android:toAlpha="0.0" : 애니메이션 끝값 (1.0) 완전 불투명-->
+    <!--android:duration="500" : 진행시간 (ms) 0.5초-->
+    <alpha android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:duration="500"/>
+
+
+    <!-- android:fromXDelta="-100%p" : 처음 x 좌표값-->
+    <!-- android:toXDelta="0%p" : 끝 x 좌표값-->
+    <!-- android:toYDelta="0%p" : 끝 y 좌표값-->
+    <!-- android:toYDelta="0%p" : 끝 y 좌표값-->
+
+    <translate
+        android:fromXDelta="-100%p"
+        android:toXDelta="0%p"
+        android:fromYDelta="0%p"
+        android:toYDelta="0%p"
+        android:duration="500"/>
+
+</set>
